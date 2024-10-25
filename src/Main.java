@@ -1,15 +1,52 @@
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Scanner;
 public class Main {
+    static Scanner sc = new Scanner(System.in);
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Arboles arbol = new Arboles();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
-        }
+        int opcion;
+
+        // Insertar nodos predefinidos
+        arbol.insertar(5);
+        arbol.insertar(3);
+        arbol.insertar(7);
+        arbol.insertar(2);
+        arbol.insertar(4);
+        arbol.insertar(6);
+        arbol.insertar(8);
+
+        do {
+            System.out.println("\n--- Menú ---");
+            System.out.println("1. Insertar un valor");
+            System.out.println("2. Eliminar un valor");
+            System.out.println("3. Imprimir el árbol en orden");
+            System.out.println("4. Salir");
+            System.out.print("Selecciona una opción: ");
+            opcion = sc.nextInt();
+
+            switch (opcion) {
+                case 1:
+                    System.out.print("Ingrese el valor a insertar: ");
+                    int valorInsertar = sc.nextInt();
+                    arbol.insertar(valorInsertar);
+                    System.out.println("Valor insertado.");
+                    break;
+                case 2:
+                    System.out.print("Ingrese el valor a eliminar: ");
+                    int valorEliminar = sc.nextInt();
+                    arbol.eliminar(valorEliminar);
+                    System.out.println("Valor eliminado.");
+                    break;
+                case 3:
+                    System.out.println("Árbol en orden:");
+                    arbol.imprimirArbol(arbol.raiz);
+                    break;
+                case 4:
+                    System.out.println("Saliendo...");
+                    break;
+                default:
+                    System.out.println("Opción inválida. Inténtalo de nuevo.");
+            }
+        } while (opcion != 4);
     }
 }

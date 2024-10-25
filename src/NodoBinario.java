@@ -25,9 +25,7 @@ public class NodoBinario{
         return nodoIzq;
     }
 
-    public void setNodoIzq(NodoBinario nodoIzq) {
-        this.nodoIzq = nodoIzq;
-    }
+    public void setNodoIzq(NodoBinario nodoIzq) {this.nodoIzq = nodoIzq;}
 
     public NodoBinario getNodoDer() {
         return nodoDer;
