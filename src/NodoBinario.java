@@ -1,23 +1,23 @@
 public class NodoBinario{
-    private String elemento;
+    private int elemento;
     private NodoBinario nodoIzq;
     private NodoBinario nodoDer;
 
-    public NodoBinario(String valor){
+    public NodoBinario(int valor){
         this(valor,null,null);
     }
 
-    public NodoBinario(String valor, NodoBinario izq, NodoBinario der) {
+    public NodoBinario(int valor, NodoBinario izq, NodoBinario der) {
         elemento = valor;
         nodoIzq = izq;
         nodoDer = der;
     }
 
-    public String getElemento() {
+    public int getElemento() {
         return elemento;
     }
 
-    public void setElemento(String elemento) {
+    public void setElemento(int elemento) {
         this.elemento = elemento;
     }
 
