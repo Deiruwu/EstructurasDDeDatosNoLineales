@@ -1,9 +1,7 @@
-import javax.swing.*;
-
 public class Arboles {
     protected NodoBinario raiz;
 
-    Arboles(){
+    Arboles() {
         raiz = null;
     }
 
@@ -15,86 +13,100 @@ public class Arboles {
         return raiz == null;
     }
 
-    public int tamaño(){
-
+    public int tamaño() {
+        // Implementación pendiente
         return 0;
     }
-    /**
-     * Balance del árbol: Esta lógica funciona bien para la inserción, pero ten en cuenta que, con el tiempo, si el árbol no está balanceado,
-     * podría degenerarse en una lista vinculada, causando que la inserción (y las búsquedas) tomen O(n). Si eso es una preocupación, puedes
-     * considerar implementar una estructura balanceada como un árbol AVL o un árbol rojo-negro.
-     */
 
     public void insertar(int elemento) {
         NodoBinario nuevo = new NodoBinario(elemento);
-        if(raiz == null) {
+        if (estaVacia()) {
             raiz = nuevo;
             return;
         }
+
         NodoBinario actual = raiz;
-        while(true){
+        while (true) {
             if (elemento < actual.getElemento() && actual.getNodoIzq() == null) {
                 actual.setNodoIzq(nuevo);
                 return;
-            } else if (actual.getNodoDer() == null) {
+            } else if (elemento >= actual.getElemento() && actual.getNodoDer() == null) {
                 actual.setNodoDer(nuevo);
                 return;
+            } else {
+                actual = (elemento < actual.getElemento()) ? actual.getNodoIzq() : actual.getNodoDer();
             }
-            actual = (elemento < actual.getElemento()) ? actual.getNodoIzq() : actual.getNodoDer();
         }
     }
-
 
     public void eliminar(int elemento) {
         if (raiz == null) {
-            return;
-        }
-        NodoBinario actual = busqueda(raiz, elemento);
-        if (actual == null) {
+            System.out.println("El árbol está vacío.");
             return;
         }
 
-        NodoBinario aux = (elemento < actual.getElemento()) ? actual.getNodoIzq() : actual.getNodoDer();
+        eliminarRecursivo(raiz, elemento);
 
-            // Caso 1: Nodo sin hijos
-            if (aux.getNodoIzq() == null && aux.getNodoDer() == null) {
-                actual.setNodoIzq(null);
-
-
-            } // Caso 2: Nodo con un solo hijo
-            else if ((aux.getNodoIzq() == null && aux.getNodoDer() != null) || (aux.getNodoIzq() != null && aux.getNodoDer() == null)) {
-
-                if (null == aux.getNodoIzq()) {
-                    actual.setNodoIzq(aux.getNodoIzq());
-                } else {
-                    actual.setNodoDer(aux.getNodoDer());
-                }
-
-            }// Caso 3: Nodo con dos hijos
-            else {
-
-            }
     }
 
-    private NodoBinario encontrarSucesor(NodoBinario nodo) {
-        while (nodo.getNodoIzq() != null) {
-            nodo = nodo.getNodoIzq();
-        }
-        return nodo;
-    }
-
-    public NodoBinario busqueda(NodoBinario actual, int elemento) {
-        if (actual == null) {
+    private NodoBinario eliminarRecursivo(NodoBinario padre, int elemento) {
+        if (padre == null) {
+            System.out.println("No se encontró el valor a eliminar.");
             return null;
         }
-        if (actual.getNodoIzq().getElemento() == elemento || actual.getNodoDer().getElemento() == elemento) {
-            return actual; // Devuelve el nodo actual si es igual al elemento buscado
+
+        if (elemento < padre.getElemento()) {
+            padre.setNodoIzq(eliminarRecursivo(padre.getNodoIzq(), elemento));
+
+        } else if (elemento > padre.getElemento()) {
+            padre.setNodoDer(eliminarRecursivo(padre.getNodoDer(), elemento));
+
         }
-        // Continúa la búsqueda en el subárbol correspondiente
-        return (elemento < actual.getElemento()) ? busqueda(actual.getNodoIzq(), elemento) : busqueda(actual.getNodoDer(), elemento);
+
+        // Nodo encontrado
+        else {
+
+            // Caso 1: Nodo sin hijos
+            if (padre.getNodoIzq() == null && padre.getNodoDer() == null) {
+                return null;
+
+            }
+            // Caso 2: Nodo con un solo hijo (derecho)
+            else if (padre.getNodoIzq() == null) {
+                return padre.getNodoDer();
+
+            }
+            // Caso 2: Nodo con un solo hijo (izquierdo)
+            else if (padre.getNodoDer() == null) {
+                return padre.getNodoIzq();
+
+            }
+            // Caso 3: Nodo con dos hijos
+            else {
+                NodoBinario sucesor = padre.getNodoDer();
+
+                while (sucesor.getNodoIzq() != null) {
+                    sucesor = sucesor.getNodoIzq();
+                }
+
+                padre.setElemento(sucesor.getElemento());
+                padre.setNodoDer(eliminarRecursivo(padre.getNodoDer(), sucesor.getElemento()));
+            }
+            System.out.println("Valor eliminado.");
+        }
+
+        return padre;
     }
-
-
+/*
+    public NodoBinario busqueda(NodoBinario actual, int elemento) {
+        if (actual == null || actual.getElemento() == elemento) {
+            return actual;
+        }
+        return (elemento < actual.getElemento())
+                ? busqueda(actual.getNodoIzq(), elemento)
+                : busqueda(actual.getNodoDer(), elemento);
+    }
+*/
     public void imprimirArbol(NodoBinario nodo) {
         if (nodo != null) {
             imprimirArbol(nodo.getNodoIzq());
@@ -102,17 +114,4 @@ public class Arboles {
             imprimirArbol(nodo.getNodoDer());
         }
     }
-
-    /*  Atributos:
-    *   Lado izquierdo deben ser menores a la raiz, a la derecha tienen que ser mayores o igual a la raiz.
-    *
-    *
-    *   Metodos:
-    *
-    *   insertar
-    *   eliminar
-    *   recorrido
-    *   
-    *
-    * */
 }
